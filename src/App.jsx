@@ -11,7 +11,7 @@ function App(){
   const products =[
     {
       id:1,
-      name:"product 1",
+      name:"product 1  updated",
       price: 1000,
       description:"This is a beauty essential kit that includes a variety of products to help you look and feel your best. The kit includes a cleanser, toner, moisturizer, and sunscreen, all designed to work together to keep your skin healthy and radiant.",
       image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30"
