@@ -31,7 +31,7 @@ function Products({products}){
                             }}
                         />
 
-                        <Card.Body>
+                        <Card.Body >
                             <Card.Title>
                                 {product.name}
                             </Card.Title>
@@ -49,8 +49,12 @@ function Products({products}){
                         {/* here we pass the id and link the product details */}
                         <Link to={`/product/${product.id}`}>
 
-
-                            <Button variant="dark" >View Details</Button>
+<div  >
+                            <Button   
+                            variant="dark 
+                            mt-auto w-100 py-2"
+                            >View Details</Button>
+                            </div>
                         </Link>
 
 
