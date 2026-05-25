@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Home from "./Pages/Home";
 import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetails";
+import { useState } from "react";
 
 function App(){
 
@@ -32,17 +33,23 @@ function App(){
     }
   ]
 
+  const [cartItems, setCartItems] = useState(0);
+
 
 
   return(
     <>
     <BrowserRouter>
- <Header />
+ <Header  cartItems ={cartItems}/>
 
     <Routes>
     <Route path="/" element={<Home products={products}/>}/>
     <Route path="/products" element={<Products products={products}/>} />
-    <Route path="/product/:id" element={<ProductDetails products={products} />} />
+    <Route path="/product/:id" element={<ProductDetails 
+    products={products} 
+    setCartItems ={setCartItems}
+    cartItems = {cartItems}
+    />} />
     </Routes>
 
 <Footer />

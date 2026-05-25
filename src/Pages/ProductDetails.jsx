@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 
-function ProductDetails({products}){
+function ProductDetails({products, setCartItems, cartItems}){
 
     const {id}= useParams()
 
@@ -12,6 +12,10 @@ function ProductDetails({products}){
         (product) => product.id === Number(id)
     )
 
+    const handleAddToCart = ()=>{
+        // cartItemss++;// cartItems = cartitmes +1
+        setCartItems(cartItems +1);
+    }
 
 
 
@@ -44,11 +48,14 @@ function ProductDetails({products}){
                                 ${singleProduct.price}
                             </h3>
 
+
                             <Button variant="dark"
-                                
+                                 onClick={handleAddToCart}
                             >
                                 add to cart
                             </Button>
+
+
                         </Card.Body>
                     </Col>
 
