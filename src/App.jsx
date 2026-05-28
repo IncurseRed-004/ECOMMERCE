@@ -6,6 +6,8 @@ import Home from "./Pages/Home";
 import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetails";
 import { useState } from "react";
+import Login from "./Pages/Login";
+import Register from "./Pages/Registerpage";
 
 function App(){
 
@@ -50,6 +52,9 @@ function App(){
     setCartItems ={setCartItems}
     cartItems = {cartItems}
     />} />
+
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
     </Routes>
 
 <Footer />
