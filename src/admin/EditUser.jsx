@@ -5,15 +5,20 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { Container } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { userRegister } from '../Redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { editUser } from '../Redux/userSlice';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function Register() {
+function EditUser() {
     const { Formik } = formik;
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const {users} = useSelector((state) => state.userState);
+    const { id } = useParams();
+
+    const user = users.find((u) => u.id === Number(id))
+
 
     const schema = yup.object().shape({
         fullname:yup.string().required("fullname please"),
@@ -21,24 +26,25 @@ function Register() {
         password: yup.string().required("password please"),
     });
 
-    const handleRegister =(values)=>{
-        values.id = Date.now(); //
-        values.role = "user";
-        values.status = true;
-        console.log("values----->",values);
+    const handleEditUser =(values)=>{
+        values.id =  Number(id); //
+        values.role = user.role;
+        values.status = user.status;
+ 
 
-        dispatch(userRegister(values));
-        toast.success("the registartion was successfull!");
-        navigate("/login");
+        dispatch(editUser(values));
+        toast.success("the update was successfull!");
+        navigate("/admin/list-users");
     }
 
     return (
         <Container className='min-vh-100 min- d-flex justify-content-center align-items-center'>
-            <Row className='justify-content-center'>
+            {user ? (
+                <Row className='justify-content-center'>
                 <Col md={4} className="w-100">
                     <Row>
                         <Col>
-                            <h4>User Register</h4>
+                            <h4>Edit User</h4>
                         </Col>
                     </Row>
                     <Row>
@@ -46,11 +52,11 @@ function Register() {
 
                             <Formik
                                 validationSchema={schema}
-                                onSubmit={handleRegister}
+                                onSubmit={handleEditUser}
                                 initialValues={{
-                                    fullname:'',
-                                    email: '',
-                                    password: '',
+                                    fullname:user?.fullname,
+                                    email: user?.email,
+                                    password: user?.password,
 
                                 }}
                             >
@@ -114,7 +120,7 @@ function Register() {
                                         </Row>
                                     
                                         <div className='d-grid'>
-                                            <Button type="submit">Register</Button>
+                                            <Button type="submit">Update user</Button>
                                         </div>
                                     </Form>
                                 )}
@@ -124,8 +130,18 @@ function Register() {
                     </Row>
                 </Col>
             </Row>
+            ) : (<Row>
+            <Col>
+            <h4>
+                Invalid user
+            </h4>
+             
+            </Col>
+                  </Row> 
+            ) }
+            
         </Container>
     );
 }
 
-export default Register;
+export default EditUser;

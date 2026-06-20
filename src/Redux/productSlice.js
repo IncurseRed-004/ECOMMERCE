@@ -1,0 +1,67 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+    products: JSON.parse(localStorage.getItem("products")) || [],
+    cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
+}
+const productSlice = createSlice({
+    name: "productSlice",
+    initialState,
+    reducers: {
+        addProduct: (state, action) => {
+            state.products.push(action.payload);
+            localStorage.setItem("products", JSON.stringify(state.products));
+        },
+        editProduct: (state, action) => {
+            const productIndex = state.products.findIndex((product) => product.id === action.payload.id);
+            if (productIndex !== -1) {
+                state.products[productIndex] = action.payload;
+                localStorage.setItem("products", JSON.stringify(state.products));
+            }
+           
+
+        },
+        deleteProduct: (state, action) => {
+            const productIndex = state.products.findIndex((product) => product.id === action.payload);
+            if (productIndex !== -1) {
+                state.products.splice(productIndex, 1);
+                localStorage.setItem("products", JSON.stringify(state.products));
+            }
+
+        },
+        addCartItem: (state, action) => { //{productName:"dsd",}        //addcartitem ({id:1,productName:""})
+            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
+            if (cartItemIndex === -1) {
+                state.cartItems.push({ ...action.payload, quantity: 1 });
+            } else {
+                state.cartItems[cartItemIndex].quantity++;
+            }
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+        },
+
+        cartItemQuantityIncrement: (state, action) => { //{productName:"dsd",}        //addcartitem ({id:1,productName:""})
+            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload);
+            if (cartItemIndex !== -1) {
+                state.cartItems[cartItemIndex].quantity++;
+                localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+
+            }
+        },
+        cartItemQuantityDecrement: (state, action) => { //{productName:"dsd",}        //addcartitem ({id:1,productName:""})
+            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload);
+            if (cartItemIndex !== -1) {
+                state.cartItems[cartItemIndex].quantity--;
+                localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+
+            }
+        },
+        removeCartItem: (state, action) => {
+            state.cartItems = state.cartItems.filter((item) => item.id !== action.payload);
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        },
+
+    }
+})
+
+export const { addProduct, editProduct, deleteProduct, addCartItem, cartItemQuantityIncrement, cartItemQuantityDecrement, removeCartItem } = productSlice.actions;
+export default productSlice.reducer;

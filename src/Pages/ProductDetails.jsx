@@ -3,66 +3,79 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartItem } from "../Redux/productSlice";
+import { toast } from "react-toastify";
 
-function ProductDetails({products, setCartItems, cartItems}){
+function ProductDetails({ setCartItems, cartItems }) {
 
-    const {id}= useParams()
+    const dispatch = useDispatch();
+    const { products } = useSelector((state) => state.productState);
+    const { id } = useParams()
 
-    const singleProduct= products.find(
+    const singleProduct = products.find(
         (product) => product.id === Number(id)
     )
 
-    const handleAddToCart = ()=>{
-        // cartItemss++;// cartItems = cartitmes +1
-        setCartItems(cartItems +1);
+    const handleAddToCart = () => {
+        dispatch(addCartItem(singleProduct));
+        toast.success(`${singleProduct.productname} added to cart!`);
     }
 
 
-
-    return(
+    return (
         <div>
             <Container>
-            <Card className="border-0">
-
-                <Row>
-                    <Col md={5}>
-                    <Card.Img
-                        src={singleProduct.image}
-                        style={{
-                            height:"450px",
-                            objectFit:"cover"
-                        }}
-                        />
-                    </Col>
-
-
-                    <Col md={7}>
-                        <Card.Body>
-                            <h2>{singleProduct.name}</h2>
-
-                            <p>
-                                {singleProduct.description}
-                            </p>
-
-                            <h3>
-                                ${singleProduct.price}
-                            </h3>
+                <Card className="border-0">
+                    {singleProduct ? (
+                        <Row>
+                            <Col md={5}>
+                                <Card.Img
+                                    src={singleProduct?.productphoto ?? null}
+                                    style={{
+                                        height: "450px",
+                                        objectFit: "cover"
+                                    }}
+                                />
+                            </Col>
 
 
-                            <Button variant="dark"
-                                 onClick={handleAddToCart}
-                            >
-                                add to cart
-                            </Button>
+                            <Col md={7}>
+                                <Card.Body>
+                                    <h2>{singleProduct?.productname ?? ""}</h2>
+
+                                    <p>
+                                        {singleProduct?.productdescription ?? ""}
+                                    </p>
+
+                                    <h3>
+                                        ${singleProduct?.productprice ?? ""}
+                                    </h3>
 
 
-                        </Card.Body>
-                    </Col>
+                                    <Button variant="dark"
+                                        onClick={handleAddToCart}
+                                    >
+                                        add to cart
+                                    </Button>
 
-                </Row>
+
+                                </Card.Body>
+                            </Col>
+
+                        </Row>
+                    ) : (
+                        <Row>
+                            <Col className="text-center">
+                                <h4>Product not found !!!</h4>
+                            </Col>
+                        </Row>
+
+                    )}
 
 
-            </Card>
+
+                </Card>
 
             </Container>
 

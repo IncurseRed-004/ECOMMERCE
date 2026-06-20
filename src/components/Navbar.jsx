@@ -6,9 +6,21 @@ import Navbar from 'react-bootstrap/Navbar';
 import { CgProfile } from "react-icons/cg";
 import { FaCartShopping } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { userLogout } from "../Redux/userSlice";
 import "./Navbar.css"
 
-function Header({ cartItems }) {
+function Header() {
+  const {cartItems} = useSelector((state)=> state.productState)
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.userState);
+  const handleLogout = () => {
+    toast.success("logout successful")
+    dispatch(userLogout());
+  }
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -22,29 +34,39 @@ function Header({ cartItems }) {
             </Nav>
 
             <Nav className="ms-auto">
+              {!isAuthenticated && (
+                <>
+                  <Nav.Link as={Link} to='/login'>Login</Nav.Link>
+                  <Nav.Link as={Link} to='/register'>Register</Nav.Link>
+                </>
+              )}
 
-              <Nav.Link as={Link} to='/login'>Login</Nav.Link>
-              <Nav.Link as={Link} to='/register'>Register</Nav.Link>
 
 
-              <Nav.Link as={Link} to='' className="position-relative">
+
+
+              <Nav.Link as={Link} to='/cart' className="position-relative">
                 <FaCartShopping size={22} />
-                <span className="cart-count">{cartItems}</span>
+                <span className="cart-count">{cartItems.length }</span>
               </Nav.Link>
 
 
+              {isAuthenticated && (
+                <NavDropdown title={<CgProfile size={22} />} id="basic-nav-dropdown">
+                  <NavDropdown.Item as={Link} to=''>Purchase Score</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/profile'>
+                    Edit Profile 
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/admin/add-product'>add products</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/admin/list-products'>List Products</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/admin/list-users'>List users</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} onClick={handleLogout} to="/login">
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
 
-              <NavDropdown title={<CgProfile size={22} />} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Purchase Score</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Edit Profile
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">LogOut</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
             </Nav>
 
           </Navbar.Collapse>

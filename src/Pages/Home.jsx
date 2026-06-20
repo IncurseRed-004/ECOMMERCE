@@ -6,7 +6,7 @@ function Home({products}){
     return(
         <div>
             <Banner />
-            <Products products={products}/>        
+            <Products />        
         </div>
     )
 }

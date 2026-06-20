@@ -6,9 +6,21 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../Redux/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Login() {
     const { Formik } = formik;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {users} = useSelector((state) => state.userState);
+    
+
+    console.log("users========>",users);
+
 
     const schema = yup.object().shape({
         email: yup.string().email("please enter a valid email").required("enter email"),
@@ -16,8 +28,27 @@ function Login() {
     });
 
     const handleLogin =(values)=>{
-        console.log("values----->",values);
+
+        const user = users.find((u)=> u.email === values.email);
         
+        if(!user){
+            toast.error("user not found")
+            return;
+        }
+
+        if(user.password !== values.password){
+           toast.error("invalid password")
+            return; 
+        }
+
+        if(!user.status){
+            toast.error("User is Inactive")
+            return;
+        }
+
+        dispatch(userLogin(user));
+        toast.success("login successful");
+        navigate("/");    //navigate to home page after login
     }
 
     return (

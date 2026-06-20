@@ -3,8 +3,12 @@ import { Card, Row, Col } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function Products({products}){
+function Products(){
+
+    const {products} = useSelector((state)=> state.productState );
+
     return(
         <div>
             <Container className="mt-5">
@@ -24,7 +28,7 @@ function Products({products}){
                         <Card className='shadow h-100 border-0'>
                         <Card.Img
                             variant="top"
-                            src={product.image}
+                            src={product.productphoto}
                             height="250px"
                             style={{
                                 objectFit:"cover"
@@ -33,15 +37,15 @@ function Products({products}){
 
                         <Card.Body >
                             <Card.Title>
-                                {product.name}
+                                {product.productname}
                             </Card.Title>
 
                             <Card.Text>
-                                {product.description}
+                                {product.productdescription}
                             </Card.Text>
 
                             <h5>
-                               ${product.price} 
+                               ${product.productprice} 
                             </h5>
                         </Card.Body>
 
