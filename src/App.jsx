@@ -16,36 +16,22 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import ListUsers from "./admin/ListUsers";
 import EditUser from "./admin/EditUser";
 import Cart from "./Pages/Cart";
-import Userprofile from "./Pages/Userprofile";
+import Userprofile from "./Pages/Userprofile"; 
 import Pagenotfound from "./Pages/Pagenotfound";
+import axios from "axios";
 
 
 
 function App(){
 
-  const products =[
-    {
-      id:1,
-      name:"product 1",
-      price: 1000,
-      description:"This is a beauty essential kit that includes a variety of products to help you look and feel your best. The kit includes a cleanser, toner, moisturizer, and sunscreen, all designed to work together to keep your skin healthy and radiant.",
-      image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30"
-    },
-    {
-      id:2,
-      name:"Product 2",
-      price: 2000,
-      description:"This is a beauty essential kit that includes a variety of products to help you look and feel your best. The kit includes a cleanser, toner, moisturizer, and sunscreen, all designed to work together to keep your skin healthy and radiant.",
-      image:"https://images.unsplash.com/photo-1498049794561-7780e7231661"
-    },
-    {
-      id:3,
-      name:"Product 3",
-      price: 3000,
-      description:"This is a beauty essential kit that includes a variety of products to help you look and feel your best. The kit includes a cleanser, toner, moisturizer, and sunscreen, all designed to work together to keep your skin healthy and radiant.",
-      image:"https://images.unsplash.com/photo-1483985988355-763728e1935b"
-    }
-  ]
+  const fetchProducts = async()=>{
+    const {data} = await axios.get("https://fakestoreapi.com/products"); // {status, data:[]}
+    console.log (data);
+  }
+
+  fetchProducts();
+
+  const products =[]
 
   const [cartItems, setCartItems] = useState(0);
 

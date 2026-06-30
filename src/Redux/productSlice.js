@@ -18,7 +18,13 @@ const productSlice = createSlice({
                 state.products[productIndex] = action.payload;
                 localStorage.setItem("products", JSON.stringify(state.products));
             }
-           
+            const cartItemIndex = state.cartItems.findIndex((pr) => pr.id === action.payload.id);
+            if (cartItemIndex !== -1) {
+                const cartItemQuantity = state.cartItems[cartItemIndex].quantity;
+                state.cartItems[cartItemIndex] = { ...action.payload, quantity: cartItemQuantity };
+                localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
+            }
 
         },
         deleteProduct: (state, action) => {
